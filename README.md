@@ -1,24 +1,8 @@
-# vue-architecture
+#### npm install without dev dependencies
+npm install --omit=dev
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
+#### run app
 npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### create .env file
+copy .env.example in .env
