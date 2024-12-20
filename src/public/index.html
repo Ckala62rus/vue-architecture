@@ -26,29 +26,31 @@
 
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
-<!--  <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">-->
+
 <body id="kt_body"
       class="bg-white header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed"
       style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
-<!--  <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed" style="&#45;&#45;kt-toolbar-height:55px;&#45;&#45;kt-toolbar-height-tablet-and-mobile:55px">-->
+
 <noscript>
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
 </noscript>
-<div id="app"></div>
+
+<div id="app" class="bg-white header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed"
+     style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px"></div>
 <!-- built files will be auto injected -->
 
 
 <!--begin::Javascript-->
 <!--begin::Global Javascript Bundle(used by all pages)-->
-<script src="assets/plugins/global/plugins.bundle.js"></script>
-<script src="assets/js/scripts.bundle.js"></script>
+<!--<script src="assets/plugins/global/plugins.bundle.js"></script>-->
+<!--<script src="assets/js/scripts.bundle.js"></script>-->
 <!--end::Global Javascript Bundle-->
 <!--begin::Page Custom Javascript(used by this page)-->
-<script src="assets/js/custom/widgets.js"></script>
-<script src="assets/js/custom/apps/chat/chat.js"></script>
-<script src="assets/js/custom/modals/create-app.js"></script>
-<script src="assets/js/custom/modals/upgrade-plan.js"></script>
+<!--<script src="assets/js/custom/widgets.js"></script>-->
+<!--<script src="assets/js/custom/apps/chat/chat.js"></script>-->
+<!--<script src="assets/js/custom/modals/create-app.js"></script>-->
+<!--<script src="assets/js/custom/modals/upgrade-plan.js"></script>-->
 <!--end::Page Custom Javascript-->
 <!--end::Javascript-->
 </body>
