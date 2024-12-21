@@ -12,16 +12,16 @@ axios.interceptors.request.use( config => {
     return config
 })
 
-// axios.interceptors.response.use(undefined, (error) => {
-//     if (error.response.status === 401 && window.location.pathname !== '/login') {
-//         //place your reentry code
-//         localStorage.removeItem('access_token')
-//         // store.dispatch('user', null)
-//         delete axios.defaults.headers.common["Authorization"];
-//         console.log('interceptor')
-//         // window.location.href = '/login';
-//     }
-//     return Promise.reject(error);
-// });
+axios.interceptors.response.use(undefined, (error) => {
+    if (error.response.status === 401 && window.location.pathname !== '/login') {
+        //place your reentry code
+        localStorage.removeItem('access_token')
+        // store.dispatch('user', null)
+        delete axios.defaults.headers.common["Authorization"];
+        console.log('interceptor')
+        window.location.href = '/login';
+    }
+    return Promise.reject(error);
+});
 
 export default axios
