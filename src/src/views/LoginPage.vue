@@ -13,7 +13,7 @@
         <!--begin::Wrapper-->
         <div class="w-lg-500px bg-white rounded shadow-sm p-10 p-lg-15 mx-auto">
           <!--begin::Form-->
-          <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="#">
+          <form @submit.prevent="onSubmitLogin" class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="#">
             <!--begin::Heading-->
             <div class="text-center mb-10">
               <!--begin::Title-->
@@ -55,14 +55,14 @@
             <!--begin::Actions-->
             <div class="text-center">
               <!--begin::Submit button-->
-              <button type="submit" id="kt_sign_in_submit" class="btn btn-lg btn-primary fw-bolder me-3 my-2">
+              <button class="btn btn-lg btn-primary fw-bolder me-3 my-2">
                 <span class="indicator-label">Sign In</span>
                 <span class="indicator-progress">Please wait...
 									<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
               </button>
               <!--end::Submit button-->
               <!--begin::Google link-->
-              <a href="#" @click="goHome" class="btn btn-light-primary btn-lg fw-bolder my-2">
+              <a href="#" class="btn btn-light-primary btn-lg fw-bolder my-2">
                 <img alt="Logo" src="assets/media/svg/social-icons/google.svg" class="h-20px me-3" />Sign in with Google</a>
               <!--end::Google link-->
             </div>
@@ -107,7 +107,7 @@ export default {
   },
 
   methods: {
-    async onSubmitLogin() {
+    async  onSubmitLogin() {
       let response = this.$store.dispatch(actionTypes.login, {
         "email": "admin2@mail.ru",
         "password": "123123",
@@ -128,16 +128,29 @@ export default {
       window.location = '/'
     },
   },
-  created() {
-    // document.body.className = '';
-    // document.body.classList.add('bg-dark');
 
+  mounted() {
+    // const app = document.getElementById('#id')
+    // app.className = ''
 
-  },
-  // mounted() {
-  //   const app = document.getElementById('#id')
-  //   app.className = ''
-  // }
+    // window.addEventListener('load', () => {
+    //   const pluginsBundle = document.createElement("script");
+    //   pluginsBundle.src =
+    //       "http://localhost:8080/assets/plugins/global/plugins.bundle.js";
+    //   document.body.appendChild(pluginsBundle);
+
+      // const scriptsBundle = document.createElement("script");
+      // scriptsBundle.src =
+      //     "http://localhost:8080/assets/js/scripts.bundle.js";
+      // document.body.appendChild(scriptsBundle);
+      //
+      // const widgets = document.createElement("script");
+      // widgets.src =
+      //     "http://localhost:8080/assets/js/custom/widgets.js";
+      // document.head.appendChild(widgets);
+    // })
+
+  }
 }
 </script>
 
