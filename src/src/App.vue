@@ -1,5 +1,7 @@
 <template>
   <div>
+  <tmp-login-page v-if="!auth"/>
+  <div v-show="auth">
     <!--begin::Main-->
     <!--    <tmp-login-page/>-->
 
@@ -82,7 +84,7 @@
     <!--end::Scrolltop-->
 
   </div>
-
+  </div>
 </template>
 
 <script>
@@ -101,9 +103,11 @@ import TmpFooter from "@/views/template/Footer";
 import {mapGetters} from "vuex"
 import {actionTypes, gettersTypes} from "@/store/modules/auth";
 import TmpToolbar from "@/views/template/Toolbar";
+import TmpLoginPage from "@/views/LoginPage";
 
 export default {
   components: {
+    TmpLoginPage,
     TmpToolbar,
     TmpFooter,
     TmpAside,
@@ -117,6 +121,16 @@ export default {
     ExplorerDrawerToggle,
     ActivitiesDrawer,
   },
+
+  head: {
+    title: {
+      inner: 'It will be a pleasure'
+    },
+    script: [
+      { type: 'text/javascript', src: '@/assets/plugins/global/plugins.bundle.js', async: true, body: true}, // Insert in body
+      { type: 'text/javascript', src: 'assets/js/scripts.bundle.js', async: true, body: true}, // Insert in body
+    ],
+  },
   computed: {
     ...mapGetters({
       auth: gettersTypes.isAuth
@@ -126,6 +140,7 @@ export default {
   data() {
     return {
       transitionName: 'slide',
+      timer: null,
     }
   },
 
@@ -133,27 +148,42 @@ export default {
     me() {
       this.$store.dispatch(actionTypes.me)
     },
+    checkAuth(){
+      this.timer = setInterval(() => {
+        this.$store.dispatch(actionTypes.me)
+      }, 5000)
+    },
   },
   mounted() {
-    // this.me()
+    this.me()
+    this.checkAuth()
 
-    // window.addEventListener('load', () => {
-    //   const pluginsBundle = document.createElement("script");
-    //   pluginsBundle.src =
-    //       "assets/plugins/global/plugins.bundle.js";
-    //   document.body.appendChild(pluginsBundle);
+    // console.log(this.$store.state.auth.auth.user)
+
+    // if (this.auth) {
+    //   window.addEventListener('load', () => {
+    //     const pluginsBundle = document.createElement("script");
+    //     pluginsBundle.src =
+    //         "http://localhost:8080/assets/plugins/global/plugins.bundle.js";
+    //     document.body.appendChild(pluginsBundle);
     //
-    //   const scriptsBundle = document.createElement("script");
-    //   scriptsBundle.src =
-    //       "assets/js/scripts.bundle.js";
-    //   document.body.appendChild(scriptsBundle);
+    //     const scriptsBundle = document.createElement("script");
+    //     scriptsBundle.src =
+    //         "http://localhost:8080/assets/js/scripts.bundle.js";
+    //     document.body.appendChild(scriptsBundle);
     //
-    //   const widgets = document.createElement("script");
-    //   widgets.src =
-    //       "assets/js/custom/widgets.js";
-    //   document.body.appendChild(widgets);
-    // })
+    //     const widgets = document.createElement("script");
+    //     widgets.src =
+    //         "http://localhost:8080/assets/js/custom/widgets.js";
+    //     document.body.appendChild(widgets);
+    //   })
+    // }
   },
+
+  unmounted() {
+    clearInterval(this.timer)
+  },
+
 }
 </script>
 
