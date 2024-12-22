@@ -150,7 +150,9 @@ export default {
     },
     checkAuth(){
       this.timer = setInterval(() => {
-        this.$store.dispatch(actionTypes.me)
+        if(this.auth) {
+          this.$store.dispatch(actionTypes.me)
+        }
       }, 5000)
     },
   },
