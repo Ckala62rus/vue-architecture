@@ -1,6 +1,5 @@
 import axios from "axios";
 import {getItem} from "@/helpers/persistancecStorage";
-// import router from "@/router";
 
 const env = process.env
 
@@ -13,13 +12,23 @@ axios.interceptors.request.use( config => {
 })
 
 axios.interceptors.response.use(undefined, (error) => {
-    if (error.response.status === 401 && window.location.pathname !== '/login') {
-        //place your reentry code
-        localStorage.removeItem('access_token')
-        // store.dispatch('user', null)
-        delete axios.defaults.headers.common["Authorization"];
-        console.log('interceptor')
-        window.location.href = '/login';
+    const location = window.location.pathname
+    if (error.response.status === 401) {
+
+        if (location === '/password-reset') {
+            return
+        }
+
+        if (location !== '/login') {
+            //place your reentry code
+            localStorage.removeItem('access_token')
+            // store.dispatch('user', null)
+            delete axios.defaults.headers.common["Authorization"];
+            console.log('interceptor')
+            window.location.href = '/login';
+        }
+
+
     }
     return Promise.reject(error);
 });
