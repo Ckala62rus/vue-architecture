@@ -28,8 +28,13 @@ const me = () => {
     })
 }
 
+const logout = () => {
+    return axios.post(urls.logout)
+}
+
 export default {
     registration,
     login,
-    me
+    me,
+    logout
 }
