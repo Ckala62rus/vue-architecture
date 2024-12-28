@@ -1,12 +1,20 @@
 <template>
-  <div>
-  <tmp-login-page v-if="!auth"/>
-  <div v-show="auth">
+  <div class="d-flex flex-column flex-root">
+
+    <router-view v-if="!auth" v-slot="{ Component }">
+<!--      <transition :name="'slide-right'">-->
+        <component :is="Component" />
+<!--      </transition>-->
+    </router-view>
+
+<!--    <tmp-password-reset/>-->
+<!--    <tmp-login-page v-if="!auth"/>-->
+    <div v-show="auth">
     <!--begin::Main-->
     <!--    <tmp-login-page/>-->
 
     <!--begin::Root-->
-    <div class="d-flex flex-column flex-root">
+    <div>
       <!--begin::Page-->
       <div class="page d-flex flex-row flex-column-fluid">
         <!--begin::Aside-->
@@ -104,9 +112,11 @@ import {mapGetters} from "vuex"
 import {actionTypes, gettersTypes} from "@/store/modules/auth";
 import TmpToolbar from "@/views/template/Toolbar";
 import TmpLoginPage from "@/views/LoginPage";
+import TmpPasswordReset from "@/views/template/PasswordReset";
 
 export default {
   components: {
+    TmpPasswordReset,
     TmpLoginPage,
     TmpToolbar,
     TmpFooter,
@@ -153,6 +163,9 @@ export default {
         if(this.auth) {
           this.$store.dispatch(actionTypes.me)
         }
+        // else {
+        //   clearInterval(this.timer)
+        // }
       }, 5000)
     },
   },
