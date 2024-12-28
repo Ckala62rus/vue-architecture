@@ -8,6 +8,7 @@ const state = {
     counter: 0,
     isAuth: false,
     authError: [],
+
 }
 
 export const mutationTypes = {
@@ -20,69 +21,54 @@ export const mutationTypes = {
     loginFail: '[auth] loginFail',
 
     me: '[auth] me',
-    isAuth: '[auth] isAuth'
+    isAuth: '[auth] isAuth',
+    logout: '[auth] logout',
 }
 
 export const actionTypes = {
     register: '[auth] register',
     login: '[auth] login',
     me: '[auth] me',
+    logout: '[auth] logout',
 }
 
 export const gettersTypes = {
-    isAuth: '[auth] auth'
+    isAuth: '[auth] auth',
+    user: '[auth] user',
 }
 
 const getters = {
-    [gettersTypes.isAuth](state) {
-        return state.isAuth
-    },
+    [gettersTypes.isAuth]: (state) => state.isAuth,
+    [gettersTypes.user]: (state) => state.user
 }
 
 const mutations = {
-    increase(state) {
-        state.counter++
-    },
-    decrease(state) {
-        state.counter--
-    },
-    [mutationTypes.registrationStart](state) {
-        state.isSubmitting = true
-    },
-    [mutationTypes.registrationStartSuccess](state) {
-        state.isSubmitting = false
-    },
-    [mutationTypes.registrationFail](state) {
-        state.isSubmitting = false
-    },
-    [mutationTypes.loginStart](state) {
-        state.isLoginSubmit = true
-        state.authError = []
-    },
-    [mutationTypes.loginStartSuccess](state) {
-        state.isLoginSubmit = false
+    ['increase']: (state) => state.counter++,
+    ['decrease']: (state) => state.counter--,
+    [mutationTypes.registrationStart]: (state) => state.isSubmitting = true,
+    [mutationTypes.registrationStartSuccess]: (state) => state.isSubmitting = false,
+    [mutationTypes.registrationFail]: (state) => state.isSubmitting = false,
+    [mutationTypes.loginStartSuccess]: (state) => state.isLoginSubmit = false,
+    [mutationTypes.me]: (state, user) => state.user = user,
+    [mutationTypes.isAuth]: (state) => state.isAuth = true,
+
+    [mutationTypes.logout](state) {
+        state.isAuth = false
+        state.user = null
     },
     [mutationTypes.loginFail](state, errors) {
         state.isLoginSubmit = false
         state.authError = errors
     },
-    [mutationTypes.me](state, user) {
-        state.user = user
+    [mutationTypes.loginStart](state) {
+        state.isLoginSubmit = true
+        state.authError = []
     },
-    [mutationTypes.isAuth](state) {
-        state.isAuth = true
-    }
 }
 
 const actions = {
-    increase(state) {
-        console.log('Action increase')
-        setTimeout(() => {
-            state.commit('increase')
-        }, 5000)
-    },
+    ['increase']: (state) => setTimeout(() => state.commit('increase'), 1000),
     decrease(state) {
-        console.log('Action decrease')
         state.commit('decrease')
     },
     [actionTypes.register](state, payload) {
@@ -90,12 +76,10 @@ const actions = {
             state.commit(mutationTypes.registrationStart)
             authApi.registration(payload)
                 .then(response => {
-                    console.log('response', response)
                     state.commit(mutationTypes.registrationStartSuccess)
                     resolve(response) // что бы можно было получить результат во vue component
                 })
                 .catch(result => {
-                    console.log('result error', result)
                     state.commit(mutationTypes.registrationFail)
                     resolve(result) // possible get result in vue component
                 })
@@ -106,7 +90,6 @@ const actions = {
             state.commit(mutationTypes.loginStart)
             authApi.login(payload)
                 .then(response => {
-                    console.log('response', response)
                     let resp = response.data
 
                     if (resp.code === 200) {
@@ -120,7 +103,6 @@ const actions = {
                     }
                 })
                 .catch(result => {
-                    console.log('result error', result)
                     state.commit(mutationTypes.loginFail, result.response)
                 })
         })
@@ -135,6 +117,25 @@ const actions = {
                 })
                 .catch(error => {
                     console.log('error', error)
+                })
+        })
+    },
+
+    [actionTypes.logout]() {
+        return new Promise(() => {
+            authApi.logout()
+                .then( () => {
+                    localStorage.removeItem('access_token')
+                    authApi.me()
+                        .then(response => {
+                            console.log(response)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+                .catch(err => {
+                    console.log(err)
                 })
         })
     }
