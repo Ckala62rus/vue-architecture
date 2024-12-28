@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  vue-tmp:
+    container_name: vue-tmp
+    build:
+      context: .
+      dockerfile: ./docker/vue/Dockerfile
+    volumes:
+      - ./docker/vue/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "5000:80"
