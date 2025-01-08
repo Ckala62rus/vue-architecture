@@ -33,7 +33,7 @@
             <!--begin::Post-->
             <div class="post d-flex flex-column-fluid" id="kt_post">
               <router-view v-slot="{ Component }">
-                <transition :name="'slide-right'">
+                <transition :name="transitionName">
                   <component :is="Component" />
                 </transition>
               </router-view>
@@ -149,8 +149,22 @@ export default {
 
   data() {
     return {
-      transitionName: 'slide',
+      // transitionName: 'slide-right',
+      // transitionName: 'fade',
+      transitionName: 'slide-fade',
       timer: null,
+    }
+  },
+
+  // then, in the parent component,
+  // watch the `$route` to determine the transition to use
+  watch: {
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      // this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+      // this.transitionName = toDepth < fromDepth ? 'fade' : 'fade'
+      this.transitionName = toDepth < fromDepth ? 'slide-fade' : 'slide-fade'
     }
   },
 
@@ -203,43 +217,110 @@ export default {
 </script>
 
 <style>
+/*.slide-fade-enter-active {*/
+/*  transition: all .3s ease;*/
+/*}*/
+/*.slide-fade-leave-active {*/
+/*  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
+/*}*/
+/*.slide-fade-enter, .slide-fade-leave-to*/
+/*  !* .slide-fade-leave-active до версии 2.1.8 *! {*/
+/*  transform: translateX(375px);*/
+/*  opacity: 0;*/
+/*}*/
+
+/*.slide-left-enter-active,*/
+/*.slide-left-leave-active,*/
+/*.slide-right-enter-active,*/
+/*.slide-right-leave-active {*/
+/*  transition-duration: 0.2s;*/
+/*  transition-property: height, opacity, transform;*/
+/*  transition-timing-function: cubic-bezier(0.25, 0, 0.1, 1);*/
+/*  overflow: hidden;*/
+/*}*/
+/*.slide-left-enter-active #kt_subheader,*/
+/*.slide-left-leave-active #kt_subheader,*/
+/*.slide-right-enter-active #kt_subheader,*/
+/*.slide-right-leave-active #kt_subheader {*/
+/*  visibility: hidden !important;*/
+/*}*/
+
+/*.slide-left-enter,*/
+/*.slide-right-leave-active {*/
+/*  opacity: 0;*/
+/*  transform: translate(2em, 0);*/
+/*}*/
+
+/*.slide-left-leave-active,*/
+/*.slide-right-enter {*/
+/*  opacity: 0;*/
+/*  transform: translate(-2em, 0);*/
+/*}*/
+/****************/
+
+
+.slide-right-leave-active,
+.slide-right-enter-active,
+.slide-left-leave-active,
+.slide-left-enter-active {
+  transition: translate .2s ease-in-out;
+}
+
+/*slide to right animation*/
+  .slide-right-enter-from {
+    translate: 100% 0;
+  }
+
+.slide-right-enter-to {
+  translate: 0 0;
+}
+
+.slide-right-leave-from {
+  translate: 0 0;
+}
+
+.slide-right-leave-to {
+  translate: -100% 0;
+}
+
+/*slide to left animation*/
+  .slide-left-enter-from {
+    translate: -100% 0;
+  }
+
+.slide-left-enter-to {
+  translate: 0 0;
+}
+
+
+.slide-left-leave-from {
+  translate: 0 0;
+}
+
+.slide-left-leave-to {
+  translate: 100% 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.1s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all .1s ease;
 }
 .slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
-  /* .slide-fade-leave-active до версии 2.1.8 */ {
-  transform: translateX(375px);
+.slide-fade-enter, .slide-fade-leave-to{
+  transform: translateX(100px);
   opacity: 0;
-}
-
-.slide-left-enter-active,
-.slide-left-leave-active,
-.slide-right-enter-active,
-.slide-right-leave-active {
-  transition-duration: 0.2s;
-  transition-property: height, opacity, transform;
-  transition-timing-function: cubic-bezier(0.25, 0, 0.1, 1);
-  overflow: hidden;
-}
-.slide-left-enter-active #kt_subheader,
-.slide-left-leave-active #kt_subheader,
-.slide-right-enter-active #kt_subheader,
-.slide-right-leave-active #kt_subheader {
-  visibility: hidden !important;
-}
-
-.slide-left-enter,
-.slide-right-leave-active {
-  opacity: 0;
-  transform: translate(2em, 0);
-}
-
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  transform: translate(-2em, 0);
 }
 </style>
